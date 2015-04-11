@@ -177,8 +177,22 @@ endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
 
+choice
+	bool "Root password"
+	default BR2_TARGET_GENERIC_ROOT_PASSWD_CLEAR
+
+config BR2_TARGET_GENERIC_ROOT_PASSWD_CLEAR
+	bool "in clear"
+
+config BR2_TARGET_GENERIC_ROOT_PASSWD_PROMPT
+	bool "prompt"
+
+endchoice # Root password
+
+if BR2_TARGET_GENERIC_ROOT_PASSWD_CLEAR
+
 config BR2_TARGET_GENERIC_ROOT_PASSWD
-	string "Root password"
+	string "password value"
 	default ""
 	help
 	  Set the initial root password (in clear). It will be md5-encrypted.
@@ -197,6 +211,8 @@ config BR2_TARGET_GENERIC_ROOT_PASSWD
 	  The password appears in clear in the .config file, and may appear
 	  in the build log! Avoid using a valuable password if either the
 	  .config file or the build log may be distributed!
+
+endif
 
 choice
 	bool "/bin/sh"
